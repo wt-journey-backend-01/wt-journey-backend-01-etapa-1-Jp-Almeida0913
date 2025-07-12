@@ -1,70 +1,78 @@
 <sup>Esse é um feedback gerado por IA, ele pode conter erros.</sup>
 
-Você tem 9 créditos restantes para usar o sistema de feedback AI.
+Você tem 8 créditos restantes para usar o sistema de feedback AI.
 
 # Feedback para Jp-Almeida0913:
 
-Nota final: **0.0/100**
+Nota final: **64.5/100**
 
-# Feedback do Desafio Express.js 🚀
+# Feedback do Seu Código - Jp-Almeida0913 🚀
 
-Olá, Jp-Almeida0913! Primeiramente, quero reconhecer o seu esforço em tentar desenvolver seu servidor Express.js. Cada linha de código é um passo em direção ao seu crescimento como desenvolvedor! 🎉 Vamos dar uma olhada nos pontos que você pode melhorar, mas antes, parabéns por ter se aventurado nesse desafio! Isso é só o começo da sua jornada! 💪
+Olá, Jp! 😊 Primeiro, quero parabenizá-lo pelo seu esforço e dedicação nesse desafio! Você já está no caminho certo, e é ótimo ver que você se preocupa com a qualidade do seu código. Vamos analisar o que você fez muito bem e como podemos melhorar ainda mais! 💪
 
-## Análise das Rotas
+## 🎉 Conquistas Bônus
 
-Eu percebi que muitos dos requisitos não foram atendidos e, ao investigar seu código, encontrei a raiz do problema: **a falta de rotas específicas**. Vamos dar uma olhada mais de perto em alguns deles:
+Antes de mergulharmos nos detalhes, vamos celebrar suas conquistas! Você utilizou corretamente as tags `<label>` e o atributo `id` nos inputs 'nome' e 'ingredientes' na rota `/sugestao`, além de ter feito o mesmo para os inputs 'nome', 'email', 'assunto' e 'mensagem' do formulário da rota `/contato (GET)`. Isso é incrível! 👏 Essas boas práticas ajudam a tornar seu código mais acessível e fácil de entender.
 
-1. **Rota `/contato`**: 
-   - Você não implementou a rota `app.get('/contato', ...)`. Isso é crucial, pois sem essa rota, não há como atender os requisitos relacionados a ela, como os campos de input que você precisa criar. Vamos trabalhar juntos para implementar essa rota! Que tal começar assim?
-     ```javascript
-     app.get('/contato', (req, res) => {
-         res.send(`
-             <form action="/contato" method="POST">
-                 <input type="text" name="nome" placeholder="Seu Nome" required />
-                 <input type="email" name="email" placeholder="Seu Email" required />
-                 <input type="text" name="assunto" placeholder="Assunto" required />
-                 <textarea name="mensagem" placeholder="Sua Mensagem" required></textarea>
-                 <button type="submit">Enviar</button>
-             </form>
-         `);
-     });
-     ```
+## 🔍 Análise de Causa Raiz
 
-2. **Rota `/sugestao`**:
-   - Essa rota também não foi criada. Para atender aos requisitos, você precisará implementá-la para retornar um status 200 e exibir informações baseadas na query string. Que tal algo assim?
-     ```javascript
-     app.get('/sugestao', (req, res) => {
-         const { nome, ingredientes } = req.query;
-         res.send(`<h1>Obrigado, ${nome}!</h1><p>Ingredientes: ${ingredientes}</p>`);
-     });
-     ```
+Agora, vamos às áreas que precisam de atenção. Identifiquei alguns pontos importantes que podemos melhorar:
 
-3. **Rota `/api/lanches`**:
-   - Assim como as anteriores, essa rota também precisa ser criada. Lembre-se de que ela deve retornar um array de lanches. Vamos adicionar isso:
-     ```javascript
-     app.get('/api/lanches', (req, res) => {
-         const lanches = [
-             { id: 1, nome: 'Hambúrguer', ingredientes: 'Carne, Pão, Queijo' },
-             { id: 2, nome: 'Pizza', ingredientes: 'Massa, Queijo, Molho de Tomate' },
-             { id: 3, nome: 'Salada', ingredientes: 'Alface, Tomate, Cenoura' }
-         ];
-         res.json(lanches);
-     });
-     ```
+### 1. Rota `/sugestao`
 
-## Problemas com o Formulário
+**Problemas Identificados:**
+- A rota `/sugestao` não está exibindo o nome e os ingredientes enviados via query string na página HTML.
+- Além disso, falta uma âncora para a rota raiz `/`.
 
-Além das rotas, você também mencionou problemas com atributos `name` em campos de input. Isso é fundamental! Como você não tem o formulário implementado ainda, isso se relaciona diretamente à ausência da rota `/contato`. Uma vez que você criar essa rota, os campos de input poderão ser implementados corretamente.
+**Causa Raiz:**
+Percebi que sua rota para `/sugestao` não está manipulando os parâmetros que vêm via query string. Para resolver isso, você precisa acessar `req.query` para capturar os parâmetros que o usuário envia. O código poderia ficar assim:
 
-## Arquivo `.gitignore`
-
-Outro ponto importante é que seu arquivo `.gitignore` não contém a pasta `node_modules`. Isso pode resultar em um repositório muito pesado e desnecessário. Um `.gitignore` básico para projetos Node.js deve incluir:
-```
-node_modules/
+```javascript
+app.get('/sugestao', (req, res) => {
+    const { nome, ingredientes } = req.query;
+    res.send(`<h1>Sugestão de ${nome}</h1><p>Ingredientes: ${ingredientes}</p><a href="/">Voltar para a página inicial</a>`);
+});
 ```
 
-## Conclusão
+### 2. Rota `/contato` (POST)
 
-Jp-Almeida0913, você está no caminho certo! O fato de você ter tentado já é uma grande conquista. Com algumas implementações de rotas e ajustes no seu código, você vai conseguir atender a todos os requisitos. Lembre-se, a prática leva à perfeição, e cada erro é uma oportunidade de aprendizado. Estou aqui para te ajudar nessa jornada! 🌟
+**Problemas Identificados:**
+- A página de resposta deve exibir o "nome", "email", "assunto" e "mensagem" enviados no formulário.
 
-Vamos em frente! Se precisar de mais ajuda, é só chamar! 💬🚀
+**Causa Raiz:**
+A rota `app.post('/contato', ...)` não está manipulando os dados que vêm do formulário. Para capturar e exibir essas informações, você precisa usar `req.body`. Para isso, certifique-se de que você está utilizando um middleware para parsear o corpo da requisição, como `express.urlencoded()`. O código poderia ser assim:
+
+```javascript
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/contato', (req, res) => {
+    const { nome, email, assunto, mensagem } = req.body;
+    res.send(`<h1>Obrigado, ${nome}!</h1><p>Email: ${email}</p><p>Assunto: ${assunto}</p><p>Mensagem: ${mensagem}</p>`);
+});
+```
+
+### 3. Rota `/api/lanches`
+
+**Problemas Identificados:**
+- A rota deve retornar um header `Content-type application/json` e um array de lanches com os atributos corretos.
+
+**Causa Raiz:**
+Atualmente, você está retornando um arquivo HTML ao invés de um JSON. Para isso, você precisa criar um array de lanches e usar `res.json()` para enviar a resposta. Por exemplo:
+
+```javascript
+app.get('/api/lanches', (req, res) => {
+    const lanches = [
+        { id: 1, nome: "Hamburguer", ingredientes: "Carne, Pão, Queijo" },
+        { id: 2, nome: "Batata Frita", ingredientes: "Batata, Sal" }
+    ];
+    res.json(lanches);
+});
+```
+
+## ⚠️ Problemas que Geraram Descontos
+
+Uma observação importante: notei que o seu `.gitignore` não contém a pasta `node_modules`. Isso pode causar problemas se você compartilhar seu projeto, pois a pasta `node_modules` é gerada localmente e não deve ser versionada. Para corrigir isso, basta adicionar `node_modules/` ao seu arquivo `.gitignore`.
+
+## 🌟 Análise Geral
+
+Seu código tem uma boa estrutura e você está no caminho certo! Com algumas correções e adições, como manipulação de dados nas rotas e o retorno adequado de JSON, você estará ainda mais próximo de criar um servidor Express.js robusto! Continue assim, e não hesite em perguntar se precisar de mais ajuda! Vamos em frente! 🚀💖
