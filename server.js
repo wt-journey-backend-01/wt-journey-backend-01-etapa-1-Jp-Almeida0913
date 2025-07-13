@@ -23,7 +23,11 @@ app.get('/sugestao', (req, res) => {
 });
 
 app.get('/contato', (req, res) => {
-    res.sendFile(path.join(__dirname, `views`, `contato.html` ))
+    try{
+        res.sendFile(path.join(__dirname, `views`, `contato.html` ))
+    }catch{
+        res.status(404).sendFile(path.join(__dirname, `public`, `404.html`))
+    }
 });
 
 app.post('/contato', (req, res) => {
@@ -39,12 +43,27 @@ app.post('/contato', (req, res) => {
   `);
 });
 
-app.get('/api/lanches', (req, res) => {
+app.get('/api/lanches', async(req, res) => {
     try {
         const filePath = path.join(__dirname, `public`, `data`, `lanches.json`);
-        const data = fs.readFileSync(filePath, `utf8`);
-        const lanches = JSON.parse(data);
+        const data = await fs.promises.readFile(filePath, `utf8`);
+        let lanches = JSON.parse(data);
+        const isValid = lanches.every(lanche => 
+            lanche &&
+            typeof lanche.id == 'number' &&
+            typeof lanche.nome == 'string' &&
+            typeof lanche.ingredientes == 'string' && 
+            lanche.nome.trim() !== '' &&
+            lanche.ingredientes.trim()!== '' &&
+            lanche.id > 0  
+        );
+        if (!isValid){
+            throw new Error('Erro na estrutura.')
+        }
+         
+        res.setHeader('Content-Type', 'application/json');
         res.json(lanches);
+
     } catch (erro){
         res.status(500).json({erro: `Erro ao carregar o cardapio.`});
     }
