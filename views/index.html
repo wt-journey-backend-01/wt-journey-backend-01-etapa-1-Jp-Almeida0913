@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>DevBurger</title>
-  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <h1>Bem-vindo à DevBurger!</h1>
+  <h1>Cardápio da DevBurger</h1>
 
-  <h2>Envie sua sugestão de lanche</h2>
+  <h2>Sugira um novo lanche</h2>
   <form action="/sugestao" method="GET">
-    <label for="nome">Seu Nome:</label>
-    <input type="text" id="nome" name="nome" required /><br><br>
+    <label for="nome">Seu nome:</label>
+    <input type="text" id="nome" name="nome" required><br><br>
 
     <label for="ingredientes">Ingredientes:</label>
     <textarea id="ingredientes" name="ingredientes" required></textarea><br><br>
 
-    <button type="submit">Enviar Sugestão</button>
+    <button type="submit">Enviar sugestão</button>
   </form>
 
   <nav>
-    <a href="/contato">Contato</a> |
-    <a href="/api/lanches">Ver Cardápio JSON</a>
+    <a href="/contato">Entre em contato</a> |
+    <a href="/api/lanches">Ver Cardápio em JSON</a>
   </nav>
 </body>
 </html>
